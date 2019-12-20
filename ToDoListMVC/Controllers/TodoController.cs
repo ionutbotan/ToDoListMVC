@@ -7,15 +7,10 @@ using ToDoListMVC.Services;
 
 namespace ToDoListMVC.Controllers
 {
-    
+    [Authorize]
     public class TodoController : Controller
     {
         private readonly ITodoItemService _todoItemService;
-        // start app ----|---------|----|- stop app (same instance)
-        // start req1 -||-||-- stop req1 (post, get, put)
-        // start req2 --|||---|||----|||--|||- stop req2
-        // -|---||---|||----||||-----||||||--------------
-
         public TodoController(ITodoItemService todoItemService)
         {
             _todoItemService = todoItemService;

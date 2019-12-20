@@ -24,12 +24,10 @@ namespace ToDoListMVC
             //services.AddSingleton<ITodoItemService, FakeTodoItemService>();
             services.AddScoped<ITodoItemService, TodoItemService>();
             services.AddControllersWithViews();
+            services.AddRazorPages();
 
             services.AddDbContext<TodoListDbContext>(options => 
                 options.UseSqlite(Configuration.GetConnectionString("TodoListDbContext")));
-
-            services.AddAuthentication();
-            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +56,7 @@ namespace ToDoListMVC
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
