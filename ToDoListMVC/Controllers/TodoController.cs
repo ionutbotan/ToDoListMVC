@@ -7,7 +7,7 @@ using ToDoListMVC.Services;
 
 namespace ToDoListMVC.Controllers
 {
-    [Authorize]
+    
     public class TodoController : Controller
     {
         private readonly ITodoItemService _todoItemService;
