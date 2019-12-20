@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,12 @@ namespace ToDoListMVC.Services
             _context = context;
         }
 
-        public async Task<bool> AddItemAsync(TodoItem newItem)
+        public async Task<bool> AddItemAsync(TodoItem newItem, IdentityUser user)
         {
             newItem.Id = Guid.NewGuid();
             newItem.IsDone = false;
             newItem.DueAt = DateTimeOffset.Now.AddDays(3);
+            newItem.UserId = user.Id;
 
             _context.Items.Add(newItem);
 
@@ -29,18 +31,18 @@ namespace ToDoListMVC.Services
             return saveResult == 1;
         }
 
-        public async Task<TodoItem[]> GetIncompleteItemsAsync()
+        public async Task<TodoItem[]> GetIncompleteItemsAsync(IdentityUser user)
         {
             var items = await _context.Items
-                .Where(x => x.IsDone == false)
+                .Where(x => x.IsDone == false && x.UserId == user.Id)
                 .ToArrayAsync();
             return items;
         }
 
-        public async Task<bool> MarkDoneAsync(Guid id)
+        public async Task<bool> MarkDoneAsync(Guid id, IdentityUser user)
         {
             var item = await _context.Items
-                .Where(x => x.Id == id)
+                .Where(x => x.Id == id && x.UserId == user.Id)
                 .SingleOrDefaultAsync();
 
             if (item == null) return false;
