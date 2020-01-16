@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  kestrel:    
+      build: 
+        context: ./../
+        dockerfile: ./ToDoListMVC/Dockerfile
+      environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+      image: todo-list-mvc
+      ports:
+          - 80:80
+      volumes: 
+          - ./app.db:/app/app.db
+          - ./ToDoListMVC.db:/app/ToDoListMVC.db
+
+# docker-compose up -d --build

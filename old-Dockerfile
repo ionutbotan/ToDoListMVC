@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+COPY ToDoListMVC/*.csproj ./app/ToDoListMVC/
+WORKDIR /app/ToDoListMVC
+RUN dotnet restore
+
+COPY ToDoListMVC/. ./
+RUN dotnet publish -o out /p:PublishWithAspNetCoreTargetManifest="false"
+
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1 AS runtime
+ENV ASPNETCORE_URLS http://+:80
+WORKDIR /app
+COPY --from=build /app/ToDoListMVC/out ./
+ENTRYPOINT ["dotnet", "ToDoListMVC.dll"]
+
+# build
+#  docker build -t todolistmvc .
