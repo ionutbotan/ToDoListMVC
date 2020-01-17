@@ -39,6 +39,14 @@ namespace ToDoListMVC.Services
             return items;
         }
 
+        public async Task<TodoItem[]> GetCompleteItemsAsync(IdentityUser user)
+        {
+            var items = await _context.Items
+                .Where(x => x.IsDone == true && x.UserId == user.Id)
+                .ToArrayAsync();
+            return items;
+        }
+
         public async Task<bool> MarkDoneAsync(Guid id, IdentityUser user)
         {
             var item = await _context.Items

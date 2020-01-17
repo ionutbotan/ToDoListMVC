@@ -25,10 +25,12 @@ namespace ToDoListMVC.Controllers
             if (currentUser == null) return Challenge();
 
             var items = await _todoItemService.GetIncompleteItemsAsync(currentUser);
+            var doneItems = await _todoItemService.GetCompleteItemsAsync(currentUser);
 
             var model = new TodoViewModel()
             {
-                Items = items
+                Items = items,
+                MarkedDoneItems = doneItems
             };
 
             return View(model);

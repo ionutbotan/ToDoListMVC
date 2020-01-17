@@ -5,34 +5,70 @@
     ViewData["Title"] = "Manage your todo list";
 }
 
-<div class="panel panel-default todo-panel">
-    <div class="panel-heading">@ViewData["Title"]</div>
+<div class="container">
+    <div class="row no-gutters">
+        <div class="col-md-7">
+            <div><h2>@ViewData["Title"]</h2></div>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <td>&#x2714;</td>
-                <td>Item</td>
-                <td>Due</td>
-            </tr>
-        </thead>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">&#x2714;</th>
+                        <th scope="col">Item</th>
+                        <th scope="col">Due</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                <form asp-action="MarkDone" method="post">
+                                    <input type="checkbox" class="done-checkbox">
+                                    <input type="hidden" name="id" value="@item.Id">
+                                </form>
+                            </td>
+                            <td>@item.Title</td>
+                            <td>@item.DueAt.Humanize()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-        @foreach (var item in Model.Items)
-        {
-            <tr>
-                <td>
-                    <form asp-action="MarkDone" method="post">
-                        <input type="checkbox" class="done-checkbox">
-                        <input type="hidden" name="id" value="@item.Id">
-                    </form>
-                </td>
-                <td>@item.Title</td>
-                <td>@item.DueAt.Humanize()</td>
-            </tr>
-        }
-    </table>
+            @await Html.PartialAsync("AddItemPartial", new TodoItem())
 
-    <div class="panel-footer add-item-form">
-        @await Html.PartialAsync("AddItemPartial", new TodoItem())
+
+
+        </div>
+
+        <div class="col-md-4 offset-md-1">
+            <div><h2>Done items list</h2></div>
+
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        @*<td>&#x2714;</td>*@
+                        <th scope="col">Item</th>
+                        @*<td>Due</td>*@
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.MarkedDoneItems)
+                    {
+                        <tr>
+                            @*<td>
+                                    <form asp-action="MarkDone" method="post">
+                                        <input type="checkbox" class="done-checkbox">
+                                        <input type="hidden" name="id" value="@item.Id">
+                                    </form>
+                                </td>*@
+                            <td><s>@item.Title</s></td>
+                            @*<td>@item.DueAt.Humanize()</td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
