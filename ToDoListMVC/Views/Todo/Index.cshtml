@@ -7,14 +7,14 @@
 
 <div class="container">
     <div class="row no-gutters">
-        <div class="col-md-7">
+        <div class="col-lg-7">
             <div><h2>@ViewData["Title"]</h2></div>
 
             <table class="table">
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">&#x2714;</th>
-                        <th scope="col">Item</th>
+                        <th class="w-75" scope="col">Item</th>
                         <th scope="col">Due</th>
                     </tr>
                 </thead>
@@ -41,15 +41,15 @@
 
         </div>
 
-        <div class="col-md-4 offset-md-1">
+        <div class="col-lg-4 offset-lg-1">
             <div><h2>Done items list</h2></div>
 
             <table class="table">
                 <thead class="thead-light">
                     <tr>
                         @*<td>&#x2714;</td>*@
-                        <th scope="col">Item</th>
-                        @*<td>Due</td>*@
+                        <th class="col" scope="col">Item</th>
+                        <th class="col-1" scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,6 +64,11 @@
                                     </form>
                                 </td>*@
                             <td><s>@item.Title</s></td>
+                            <td>
+                                <form method="post" asp-action="DeleteItem" asp-route-id="@item.Id">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
                             @*<td>@item.DueAt.Humanize()</td>*@
                         </tr>
                     }
