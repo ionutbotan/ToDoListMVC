@@ -77,6 +77,26 @@ namespace ToDoListMVC.Controllers
         }
 
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MarkUndone(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null) return Challenge();
+
+            var successful = await _todoItemService.MarkUndoneAsync(id, currentUser);
+            if (!successful)
+            {
+                return BadRequest("Could not mark item as done.");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteItem(Guid id)
         {
             if (id == Guid.Empty)

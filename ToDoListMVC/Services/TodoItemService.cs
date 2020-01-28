@@ -61,6 +61,20 @@ namespace ToDoListMVC.Services
             return saveResult == 1; // One entity should have been updated
         }
 
+        public async Task<bool> MarkUndoneAsync(Guid id, IdentityUser user)
+        {
+            var item = await _context.Items
+                .Where(x => x.Id == id && x.UserId == user.Id)
+                .SingleOrDefaultAsync();
+
+            if (item == null) return false;
+
+            item.IsDone = false;
+
+            var saveResult = await _context.SaveChangesAsync();
+            return saveResult == 1; // One entity should have been updated
+        }
+
         public async Task<bool> DeleteItemAsync(Guid id, IdentityUser user)
         {
             var item = await _context.Items

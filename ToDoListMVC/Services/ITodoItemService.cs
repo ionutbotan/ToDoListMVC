@@ -14,6 +14,7 @@ namespace ToDoListMVC.Services
 
         Task<bool> AddItemAsync(TodoItem newItem, IdentityUser user);
         Task<bool> MarkDoneAsync(Guid id, IdentityUser user);
+        Task<bool> MarkUndoneAsync(Guid id, IdentityUser user);
         Task<bool> DeleteItemAsync(Guid id, IdentityUser user);
     }
 }
